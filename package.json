@@ -1,6 +1,6 @@
 {
   "name": "decky-framegen",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "This plugin installs and manages OptiScaler, a tool that enhances upscaling and enables frame generation in a range of DirectX 12 games.",
   "type": "module",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/xXJSONDeruloXx/Decky-Framegen.git",
   "devDependencies": {
     "@decky/rollup": "^1.0.1",
-    "@decky/ui": "^4.11.1",
+    "@decky/ui": "^4.7.2",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@types/webpack": "^5.28.5",
@@ -49,12 +49,13 @@
       ]
     }
   },
-  "remote_binary_bundling": true,
-  "remote_binary": [
+  "remote_binary_bundling" : true,
+  "remote_binary": 
+  [
     {
-      "sha256hash": "839e6ab37b1b968a7c1d1ac2ef8d56ed0c783d8fe1322215aa2ceee5fe0c8db3",
-      "url": "https://github.com/xXJSONDeruloXx/OptiScaler-Bleeding-Edge/releases/download/OptiScaler_v0.9.0_pre_3/Optiscaler_0.9.0-pre3.20250911.7z",
-      "name": "Optiscaler_0.9.0-pre3.20250911.7z"
+      "sha256hash":  "1ebf2473cd8879b63fb773b76f169a75f35a7db1021820be1049a48c8b88694b",
+      "url":  "https://github.com/xXJSONDeruloXx/OptiScaler-Bleeding-Edge/releases/download/OptiScaler_v0.9.0_pre_6/Optiscaler_0.9.0-pre6.20251205.7z",
+      "name":  "Optiscaler_0.9.0-pre6.20251205.7z"
     },
     {
       "sha256hash": "9123f83739e7bb39fcb135cafc339606dec78a74c650338ad275ee45c2d59d02",
@@ -67,9 +68,11 @@
       "name": "OptiPatcher_v0.30.asi"
     },
     {
-      "sha256hash": "1d75e7c1f37f966517f625aa3cc9602ff89d42ad2a7fcbdfa5fc91dab4674149",
-      "url": "https://github.com/xXJSONDeruloXx/OptiScaler-Bleeding-Edge/releases/download/OptiScaler_v0.7.8-pre0_20250816_unsigned_dll-13b2b5d0/nvngx.dll",
-      "name": "nvngx.dll"
+      "sha256hash":  "1d75e7c1f37f966517f625aa3cc9602ff89d42ad2a7fcbdfa5fc91dab4674149",
+      "url":  "https://github.com/xXJSONDeruloXx/OptiScaler-Bleeding-Edge/releases/download/OptiScaler_v0.7.8-pre0_20250816_unsigned_dll-13b2b5d0/nvngx.dll",
+      "name":  "nvngx.dll"
     }
   ]
 }
+
+

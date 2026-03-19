@@ -129,28 +129,28 @@ class Plugin:
             return False
     
     def _modify_optiscaler_ini(self, ini_file):
-        """Modify OptiScaler.ini to set FGType=nukems, Fsr4Update=true, and ASI plugin settings"""
+        """Modify OptiScaler.ini to enforce plugin-required settings."""
         try:
             if ini_file.exists():
                 with open(ini_file, 'r') as f:
                     content = f.read()
-                
-                # Replace FGType=auto with FGType=nukems
-                updated_content = re.sub(r'FGType\s*=\s*auto', 'FGType=nukems', content)
-                
-                # Replace Fsr4Update=auto with Fsr4Update=true
-                updated_content = re.sub(r'Fsr4Update\s*=\s*auto', 'Fsr4Update=true', updated_content)
-                
-                # Replace LoadAsiPlugins=auto with LoadAsiPlugins=true
-                updated_content = re.sub(r'LoadAsiPlugins\s*=\s*auto', 'LoadAsiPlugins=true', updated_content)
-                
-                # Replace Path=auto with Path=plugins
-                updated_content = re.sub(r'Path\s*=\s*auto', 'Path=plugins', updated_content)
+
+                replacements = {
+                    'FGType': 'nukems',
+                    'Fsr4Update': 'true',
+                    'LoadAsiPlugins': 'true',
+                    'Path': 'plugins',
+                    'UseHQFont': 'false',
+                }
+
+                updated_content = content
+                for key, value in replacements.items():
+                    updated_content = re.sub(rf'^{key}\s*=\s*.*$', f'{key}={value}', updated_content, flags=re.MULTILINE)
                 
                 with open(ini_file, 'w') as f:
                     f.write(updated_content)
                 
-                decky.logger.info("Modified OptiScaler.ini to set FGType=nukems, Fsr4Update=true, LoadAsiPlugins=true, Path=plugins")
+                decky.logger.info("Modified OptiScaler.ini to enforce plugin-required settings including UseHQFont=false")
                 return True
             else:
                 decky.logger.warning(f"OptiScaler.ini not found at {ini_file}")
@@ -512,6 +512,9 @@ class Plugin:
                 decky.logger.info(f"Copied OptiScaler.ini from {source_ini} to {target_ini}")
             else:
                 decky.logger.warning("No OptiScaler.ini found to copy")
+
+            if target_ini.exists():
+                self._modify_optiscaler_ini(target_ini)
 
             plugins_src = fgmod_path / "plugins"
             plugins_dest = directory / "plugins"

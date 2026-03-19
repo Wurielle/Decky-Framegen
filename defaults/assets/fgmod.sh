@@ -68,7 +68,7 @@ for arg in "$@"; do
     fi
 
     # Extract executable path from YAML
-    exe_path=$(grep -E '^\s*exe:' "$config_file" | sed 's/.*exe:[[:space:]]*//')
+    exe_path=$(grep -E '^\s*exe:' "$config_file" | sed 's/.*exe:[[:space:]]*//' )
 
     if [[ -n "$exe_path" ]]; then
       exe_folder_path=$(dirname "$exe_path")
@@ -127,6 +127,22 @@ else
   cp "$fgmod_path/OptiScaler.ini" "$exe_folder_path/OptiScaler.ini" || error_exit "❌ Failed to copy OptiScaler.ini"
   logger -t fgmod "📄 OptiScaler.ini installed to $exe_folder_path"
 fi
+
+normalize_optiscaler_ini() {
+  local ini_path="$1"
+
+  [[ -f "$ini_path" ]] || return 0
+
+  sed -i -E \
+    -e 's|^FGType[[:space:]]*=.*$|FGType=nukems|' \
+    -e 's|^Fsr4Update[[:space:]]*=.*$|Fsr4Update=true|' \
+    -e 's|^LoadAsiPlugins[[:space:]]*=.*$|LoadAsiPlugins=true|' \
+    -e 's|^Path[[:space:]]*=.*$|Path=plugins|' \
+    -e 's|^UseHQFont[[:space:]]*=.*$|UseHQFont=false|' \
+    "$ini_path"
+}
+
+normalize_optiscaler_ini "$exe_folder_path/OptiScaler.ini"
 
 # === OptiScaler env variables Handling ===
 if [[ -f "$fgmod_path/update-optiscaler-config.py" ]]; then
@@ -192,8 +208,14 @@ if [[ $# -gt 1 ]]; then
   # Execute the original command
   export SteamDeck=0
   export WINEDLLOVERRIDES="$WINEDLLOVERRIDES,dxgi=n,b"
+
+  # Filter out leading -- separators (from Steam launch options)
+  while [[ $# -gt 0 && "$1" == "--" ]]; do
+    shift
+  done
+
   exec >/dev/null 2>&1
-  exec "$@"
+  "$@"
 else
   echo "Done!"
   echo "----------------------------------------"
