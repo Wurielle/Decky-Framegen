@@ -128,6 +128,22 @@ else
   logger -t fgmod "📄 OptiScaler.ini installed to $exe_folder_path"
 fi
 
+normalize_optiscaler_ini() {
+  local ini_path="$1"
+
+  [[ -f "$ini_path" ]] || return 0
+
+  sed -i -E \
+    -e 's|^FGType[[:space:]]*=.*$|FGType=nukems|' \
+    -e 's|^Fsr4Update[[:space:]]*=.*$|Fsr4Update=true|' \
+    -e 's|^LoadAsiPlugins[[:space:]]*=.*$|LoadAsiPlugins=true|' \
+    -e 's|^Path[[:space:]]*=.*$|Path=plugins|' \
+    -e 's|^UseHQFont[[:space:]]*=.*$|UseHQFont=false|' \
+    "$ini_path"
+}
+
+normalize_optiscaler_ini "$exe_folder_path/OptiScaler.ini"
+
 # === OptiScaler env variables Handling ===
 if [[ -f "$fgmod_path/update-optiscaler-config.py" ]]; then
   python "$fgmod_path/update-optiscaler-config.py" "$exe_folder_path/OptiScaler.ini"
